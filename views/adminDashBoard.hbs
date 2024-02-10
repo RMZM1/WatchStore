@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+</head>
+
+<body>
+    <div class="page-wrapper">
+        {{>header}}
+
+        <main class="main" style="margin-top: 140px;">
+            <div class="page-header">
+                <div class="container d-flex flex-column align-items-center">
+                    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                    </nav>
+                    <h1 style="color: black;">Admin</h1>
+                </div>
+            </div>
+            <br><br><br>
+            <div class="container account-container custom-account-container">
+                <div class="row">
+                    <div class="sidebar widget widget-dashboard mb-lg-0 mb-3 col-lg-3 order-0">
+                        <img src="images/userAccount.png" alt="ProfilePic" width="50%" height="50%" />
+                        <ul class="nav nav-tabs list flex-column mb-0" role="tablist">
+                            <li class="nav-item">
+                                <div>{{resp.admin.fullName}}</div>
+                                <div>{{resp.admin.email}}</div>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" id="admins-tab" data-toggle="tab" href="#admins" role="tab"
+                                    aria-controls="admins" aria-selected="false">Admins</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-tab" data-toggle="tab" href="#product" role="tab"
+                                    aria-controls="product" aria-selected="false">Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="order-tab" data-toggle="tab" href="#order" role="tab"
+                                    aria-controls="order" aria-selected="false">Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="message-tab" data-toggle="tab" href="#message" role="tab"
+                                    aria-controls="message" aria-selected="false">Messages</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/adminLogout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-9 order-lg-last order-1 tab-content">
+                        <div class="tab-pane fade show active" id="admins" role="tabpanel">
+                            <div class="order-content">
+                                <h3 class="account-sub-title d-none d-md-block"><i
+                                        class="sicon-social-dropbox align-middle mr-3"></i>Admins</h3>
+                                <div style="margin-bottom: 20px; text-align:end;">
+                                    <button onclick="showAddAdminForm()" class="button-34" role="button">Add
+                                        Admin</button>
+                                </div>
+
+                                <div class="order-table-container text-center">
+                                    <table class="table table-order text-left">
+                                        <thead>
+                                            <tr>
+                                                <th class="admin-id">Admin ID</th>
+                                                <th class="admin-name">Name</th>
+                                                <th class="admin-email">Email</th>
+                                                <th class="admin-action">ACTIONS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#if resp.admins}}
+                                            {{#each resp.admins}}
+                                            <tr>
+                                                <th class="admin-id">{{this._id}}</th>
+                                                <th class="admin-name">{{this.fullName}}</th>
+                                                <th class="admin-email">{{this.email}}</th>
+                                                <th class="order-action">
+                                                    <button onclick="removeAdmin('{{this._id}}')" class="button-33"
+                                                        role="button">Remove</button>
+                                                </th>
+                                            </tr>
+                                            {{/each}}
+                                            {{else}}
+                                            <tr>
+                                                <td class="text-center p-0" colspan="5">
+                                                    <p class="mb-5 mt-5">
+                                                        No Admins To Show
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            {{/if}}
+                                        </tbody>
+                                    </table>
+                                    <hr class="mt-0 mb-3 pb-2" />
+                                </div>
+                            </div>
+                        </div><!-- End .tab-pane -->
+
+                        <div class="tab-pane fade" id="product" role="tabpanel">
+                            <div class="order-content">
+                                <h3 class="account-sub-title d-none d-md-block"><i
+                                        class="sicon-social-dropbox align-middle mr-3"></i>Products</h3>
+                                <div style="margin-bottom: 20px; text-align:end;">
+                                    <button onclick="showAddProductForm()" class="button-34" role="button">Add
+                                        Product</button>
+                                </div>
+                                <div class="order-table-container text-center">
+                                    <table class="table table-order text-left">
+                                        <thead>
+                                            <tr>
+                                                <th class="product-pic">Image</th>
+                                                <th class="product-title">Title</th>
+                                                <th class="product-ccategory">Category</th>
+                                                <th class="product-stock">Stock</th>
+                                                <th class="product-pprice">Price</th>
+                                                <th class="product-action">ACTIONS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#if resp.products}}
+                                            {{#each resp.products}}
+                                            <tr>
+                                                <th class="product-pic">
+                                                    <figure class="product-image-container">
+                                                        <a href="/showProductDetails{{this._id}}" class="product-image">
+                                                            <img src={{this.productPic}} alt="product" width="80"
+                                                                height="80" class="ProductImageContainer">
+                                                        </a>
+                                                    </figure>
+                                                </th>
+                                                <th class="product-title">{{this.title}}</th>
+                                                <th class="product-ccategory">{{this.category}}</th>
+                                                <th class="product-stock">{{this.stock}}</th>
+                                                <th class="product-pprice">${{this.price}}</th>
+                                                <th class="product-action">
+                                                    <button
+                                                        onclick="showEditProductForm('{{this._id}}', '{{this.title}}', '{{this.price}}', '{{this.stock}}', '{{this.description}}', '{{this.keyword}}', '{{this.category}}')"
+                                                        class="button-34" role="button">
+                                                        Edit
+                                                    </button>
+                                                    <a href="/showProductDetails{{this._id}}" class="button-34"
+                                                        role="button">Details</a>
+                                                    <button onclick="deleteProduct('{{this._id}}')" class="button-33"
+                                                        role="button">Delete</button>
+                                                </th>
+                                            </tr>
+                                            {{/each}}
+                                            {{else}}
+                                            <tr>
+                                                <td class="text-center p-0" colspan="5">
+                                                    <p class="mb-5 mt-5">
+                                                        No Products added.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            {{/if}}
+                                        </tbody>
+                                    </table>
+                                    <hr class="mt-0 mb-3 pb-2" />
+                                </div>
+                            </div>
+                        </div><!-- End .tab-pane -->
+
+
+
+                        <div class="tab-pane fade" id="order" role="tabpanel">
+                            <div class="order-content">
+                                <h3 class="account-sub-title d-none d-md-block"><i
+                                        class="sicon-social-dropbox align-middle mr-3"></i>Orders</h3>
+                                <div class="order-table-container text-center">
+                                    <table class="table table-order text-left">
+                                        <thead>
+                                            <tr>
+                                                <th class="order-id">ORDER ID</th>
+                                                <th class="order-date">DATE</th>
+                                                <th class="order-status">STATUS</th>
+                                                <th class="order-price">TOTAL</th>
+                                                <th class="order-action">ACTIONS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#if resp.orders}}
+                                            {{#each resp.orders}}
+                                            <tr>
+                                                <th class="order-id">{{this._id}}</th>
+                                                <th class="order-date">{{dateFormat this.createdAt "dddd, MMMM Do YYYY,
+                                                    h:mm a"}}</th>
+                                                <th class="order-status">{{this.status}}</th>
+                                                <th class="order-price">${{this.totalPrice}}</th>
+                                                <th class="order-action">
+                                                    <button
+                                                        onclick="showEditOrderForm('{{this._id}}','{{this.deliveryAddress}}','{{this.postalCode}}','{{this.status}}')"
+                                                        class="button-33" role="button">Edit</button>
+                                                    <button onclick="deleteOrder('{{this._id}}')" class="button-33"
+                                                        role="button">Delete</button>
+                                                    <a href="/showOrderDetails{{this._id}}" class="button-34"
+                                                        role="button">Details</a>
+                                                </th>
+                                            </tr>
+                                            {{/each}}
+                                            {{else}}
+                                            <tr>
+                                                <td class="text-center p-0" colspan="5">
+                                                    <p class="mb-5 mt-5">
+                                                        No Order has been made yet.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            {{/if}}
+                                        </tbody>
+                                    </table>
+                                    <hr class="mt-0 mb-3 pb-2" />
+                                </div>
+                            </div>
+                        </div><!-- End .tab-pane -->
+
+                        <div class="tab-pane fade" id="message" role="tabpanel">
+                            <div class="order-content">
+                                <h3 class="account-sub-title d-none d-md-block"><i
+                                        class="sicon-social-dropbox align-middle mr-3"></i>Message</h3>
+                                <div class="order-table-container text-center">
+                                    <table class="table table-order text-left">
+                                        <thead>
+                                            <tr>
+                                                <th class="message-Name">Name</th>
+                                                <th class="message-email">Email</th>
+                                                <th class="message-subject">Subject</th>
+                                                <th class="message-msg">Message</th>
+                                                <th class="message-date">Date</th>
+                                                <th class="message-action">ACTIONS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#if resp.messages}}
+                                            {{#each resp.messages}}
+                                            <tr>
+                                                <th class="message-Name">{{this.contactName}}</th>
+                                                <th class="message-email">{{this.contactEmail}}</th>
+                                                <th class="message-subject">{{this.contactSubject}}</th>
+                                                <th class="message-msg">{{this.contactMessage}}</th>
+                                                <th class="message-date">{{dateFormat this.createdAt "dddd, MMMM Do
+                                                    YYYY,
+                                                    h:mm a"}}</th>
+                                                <th class="message-action">
+                                                    <button onclick="deleteMessage('{{this._id}}')" class="button-33"
+                                                        role="button">Delete</button>
+                                                </th>
+                                            </tr>
+                                            {{/each}}
+                                            {{else}}
+                                            <tr>
+                                                <td class="text-center p-0" colspan="5">
+                                                    <p class="mb-5 mt-5">
+                                                        No Order has been made yet.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            {{/if}}
+                                        </tbody>
+                                    </table>
+                                    <hr class="mt-0 mb-3 pb-2" />
+                                </div>
+                            </div>
+                        </div><!-- End .tab-pane -->
+                    </div>
+
+
+
+
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+
+            <div class="popupForms">
+                {{!-- Admin Fomr --}}
+                <div class="popup">
+                    <div class="formPopup" id="addAdminForm">
+                        <form action="/signUpAdmin" method="post" class="formContainer">
+                            <div style="text-align: end; margin: 10px; ">
+                                <button type="button" class="button-33" onclick="closeAddAdminForm()">X</button>
+                            </div>
+                            <div style="text-align: center; margin: 10px; ">
+                                <h4>Add Admin</h4>
+                            </div>
+                            <div>
+                                <label for="name">
+                                    <strong>Name</strong>
+                                </label>
+                                <input type="text" id="name" placeholder="full Name" name="fullName" required>
+                            </div>
+                            <div>
+                                <label for="email">
+                                    <strong>Email</strong>
+                                </label>
+                                <input type="text" id="email" placeholder="admin@xyz.com" name="email" required>
+                            </div>
+                            <div>
+                                <label for="password">
+                                    <strong>Password</strong>
+                                </label>
+                                <input type="password" id="password" name="password" minlength="8" required>
+                            </div>
+                            <div style="text-align: end; margin: 10px; ">
+                                <button type="submit" class="button-33">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {{!-- Add Product Form --}}
+                <div class="popup">
+                    <div class="formPopup" id="addProductForm">
+                        <form action="/addProduct" method="post" enctype="multipart/form-data" class="formContainer">
+                            <div style="text-align: end; margin: 10px; ">
+                                <button type="button" class="button-33" onclick="closeAddProductForm()">X</button>
+                            </div>
+                            <div style="text-align: center; margin: 10px; ">
+                                <h4>Add Product</h4>
+                            </div>
+                            <div>
+                                <label for="pic">
+                                    <strong>Image</strong>
+                                </label>
+                                <input type="file" id="AddProductPic" name="ProductPic" required>
+                            </div>
+
+                            <div>
+                                <label for="title">
+                                    <strong>Title</strong>
+                                </label>
+                                <input type="text" id="AddProductTitle" name="title" required>
+                            </div>
+
+                            <div>
+                                <label for="price">
+                                    <strong>Price in $</strong>
+                                </label>
+                                <input type="number" id="AddProductPrice" name="price" min="0" required>
+                            </div>
+
+                            <div>
+                                <label for="stock">
+                                    <strong>Stock</strong>
+                                </label>
+                                <input type="number" id="AddProductStock" name="stock" min="0" required>
+                            </div>
+
+                            <div>
+                                <label for="description">
+                                    <strong>Description</strong>
+                                </label>
+                                <textarea id="AddProductDescription" name="description" required></textarea>
+                            </div>
+
+                            <div>
+                                <label for="keyword">
+                                    <strong>Keywords</strong>
+                                </label>
+                                <textarea id="AddProductKeyword" name="keyword" required></textarea>
+                            </div>
+
+                            <div>
+                                <label for="category">
+                                    <strong>Category</strong>
+                                </label>
+                                <textarea id="AddProductCategory" name="category" required></textarea>
+                            </div>
+
+                            <div>
+                                <label for="createdBy">
+                                    <strong>CreatedBy</strong>
+                                </label>
+                                <input type="text" id="AddProductCreatedBy" name="createdBy" value="{{resp.admin._id}}"
+                                    readonly>
+                            </div>
+                            <div>
+                                <label for="updatedBy">
+                                    <strong>UpdatedBy</strong>
+                                </label>
+                                <input type="text" id="AddProductUpdatedBy" name="updatedBy" value="{{resp.admin._id}}"
+                                    readonly>
+                            </div>
+
+                            <div style="text-align: end; margin: 10px; ">
+                                <button type="submit" class="button-34">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {{!-- Edit Product Form --}}
+                <div class="popup">
+                    <div class="formPopup" id="editProductForm">
+                        <form action="/updateProduct" method="post" enctype="multipart/form-data" class="formContainer">
+                            <div style="text-align: end; margin: 10px; ">
+                                <button type="button" class="button-33" onclick="closeEditProductForm()">X</button>
+                            </div>
+                            <div style="text-align: center; margin: 10px; ">
+                                <h4>Edit Product</h4>
+                            </div>
+
+                            <div>
+                                <label for="id">
+                                    <strong>Product ID</strong>
+                                </label>
+                                <input type="text" id="editFormProductID" name="id" readonly>
+                            </div>
+
+                            <div>
+                                <label for="pic">
+                                    <strong>Image</strong><span> (Leave Empty if you dont want to change)</span>
+                                </label>
+                                <input type="file" id="editProductPic" name="ProductPic">
+                            </div>
+
+                            <div>
+                                <label for="title">
+                                    <strong>Title</strong>
+                                </label>
+                                <input type="text" id="editProductTitle" name="title" required>
+                            </div>
+
+                            <div>
+                                <label for="price">
+                                    <strong>Original Price in $</strong>
+                                </label>
+                                <input type="number" id="editProductPrice" name="price" min="0" required>
+                            </div>
+                            <div>
+                                <label for="newPrice">
+                                    <strong>Offer Price in $</strong><span> (Leave Empty if you dont want to
+                                        change)</span>
+                                </label>
+                                <input type="number" id="editProductNewPrice" name="newPrice" min="0">
+                            </div>
+                            <div>
+                                <label for="salePercent">
+                                    <strong>Discount Percent</strong><span> (Leave Empty if you dont want to
+                                        change)</span>
+                                </label>
+                                <input type="number" id="editProductSalePercent" name="salePercent" min="0">
+                            </div>
+
+                            <div>
+                                <label for="stock">
+                                    <strong>Stock</strong>
+                                </label>
+                                <input type="number" id="editProductStock" name="stock" min="0" required>
+                            </div>
+
+                            <div>
+                                <label for="description">
+                                    <strong>Description</strong>
+                                </label>
+                                <textarea id="editProductDescription" name="description" required></textarea>
+                            </div>
+
+                            <div>
+                                <label for="keyword">
+                                    <strong>Keywords</strong>
+                                </label>
+                                <textarea id="editProductKeyword" name="keyword" required></textarea>
+                            </div>
+
+                            <div>
+                                <label for="category">
+                                    <strong>Category</strong>
+                                </label>
+                                <textarea id="editProductCategory" name="category" required></textarea>
+                            </div>
+
+                            <div>
+                                <label for="updatedBy">
+                                    <strong>UpdatedBy</strong>
+                                </label>
+                                <input type="text" id="editProductUpdatedBy" name="updatedBy" value="{{resp.admin._id}}"
+                                    readonly>
+                            </div>
+
+                            <div style="text-align: end; margin: 10px; ">
+                                <button type="submit" class="button-34">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {{!-- Edit Order Form --}}
+                <div class="popup">
+                    <div class="formPopup" id="editOrderForm">
+                        <form action="/updateOrder" method="post" class="formContainer">
+                            <div style="text-align: end; margin: 10px; ">
+                                <button type="button" class="button-33" onclick="closeEditOrderForm()">X</button>
+                            </div>
+                            <div style="text-align: center; margin: 10px; ">
+                                <h4>Edit Order</h4>
+                            </div>
+
+
+                            <div>
+                                <label for="editFormOrderID">
+                                    <strong>Order ID</strong>
+                                </label>
+                                <input type="text" id="editFormOrderID" name="orderId" readonly>
+                            </div>
+
+
+                            <div>
+                                <label for="editOrderDeliveryAddress">
+                                    <strong>Delivery Address</strong>
+                                </label>
+                                <textarea id="editOrderDeliveryAddress" name="deliveryAddress" required></textarea>
+                            </div>
+                            <div>
+                                <label for="editOrderPostalCode">
+                                    <strong>Postal Code</strong>
+                                </label>
+                                <input type="text" id="editOrderPostalCode" name="postalCode" required>
+                            </div>
+                            <div>
+                                <label for="editOrderStatus">
+                                    <strong>Status</strong>
+                                </label>
+                                <input type="text" id="editOrderStatus" name="status" required>
+                            </div>
+
+
+                            <div>
+                                <label for="updatedBy">
+                                    <strong>UpdatedBy</strong>
+                                </label>
+                                <input type="text" id="AddProductUpdatedBy" name="updatedBy" value="{{resp.admin._id}}"
+                                    readonly>
+                            </div>
+
+                            <div style="text-align: end; margin: 10px; ">
+                                <button type="submit" class="button-34">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="mb-5"></div><!-- margin -->
+        </main><!-- End .main -->
+
+        {{>footer}}
+    </div>
+    <!-- End .page-wrapper -->
+    {{>scripts}}
+
+    <script>
+        function deleteOrder(orderId) {
+            if (confirm("Are You Sure you want to Delete order")) {
+                const url = "http://localhost:8080/order/deleteOrder";
+                if (orderId) {
+                    let data = {
+                        orderId
+                    };
+                    const options = {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    fetch(url, options).then(response => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                let x = document.getElementById("snackbar");
+                                // Add the "show" class to DIV
+                                x.innerText = `${data.message}`;
+                                x.style.backgroundColor = "#fff";
+                                x.style.color = "#333";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                                location.reload();
+                            }
+                            else {
+                                let x = document.getElementById("snackbar");
+                                x.innerText = "Something Went Wrong";
+                                // Add the "show" class to DIV
+                                x.style.backgroundColor = "red";
+                                x.style.color = "white";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                            }
+                        })
+                }
+            }
+        }
+
+        function removeAdmin(adminId) {
+            if (confirm("Are You Sure you want to Remove This Admin")) {
+                const url = "http://localhost:8080/admin/removeAdmin";
+                if (adminId) {
+                    let data = {
+                        adminId
+                    };
+                    const options = {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    fetch(url, options).then(response => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                let x = document.getElementById("snackbar");
+                                // Add the "show" class to DIV
+                                x.innerText = `${data.message}`;
+                                x.style.backgroundColor = "#fff";
+                                x.style.color = "#333";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                                location.reload();
+                            }
+                            else {
+                                let x = document.getElementById("snackbar");
+                                x.innerText = "Something Went Wrong";
+                                // Add the "show" class to DIV
+                                x.style.backgroundColor = "red";
+                                x.style.color = "white";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                            }
+                        })
+                }
+            }
+        }
+
+        function deleteProduct(productId) {
+            if (confirm("Are You Sure you want to this product")) {
+                const url = "http://localhost:8080/product/deleteProduct";
+                if (productId) {
+                    let data = {
+                        productId
+                    };
+                    const options = {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    fetch(url, options).then(response => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                let x = document.getElementById("snackbar");
+                                // Add the "show" class to DIV
+                                x.innerText = `${data.message}`;
+                                x.style.backgroundColor = "#fff";
+                                x.style.color = "#333";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                                location.reload();
+                            }
+                            else {
+                                let x = document.getElementById("snackbar");
+                                x.innerText = "Something Went Wrong";
+                                // Add the "show" class to DIV
+                                x.style.backgroundColor = "red";
+                                x.style.color = "white";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                            }
+                        })
+                }
+            }
+        }
+
+
+        function deleteMessage(messageId) {
+            if (confirm("Are You Sure you want to this Message")) {
+                const url = "http://localhost:8080/deleteMessage";
+                if (messageId) {
+                    let data = {
+                        messageId
+                    };
+                    const options = {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    fetch(url, options).then(response => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                let x = document.getElementById("snackbar");
+                                // Add the "show" class to DIV
+                                x.innerText = `${data.message}`;
+                                x.style.backgroundColor = "#fff";
+                                x.style.color = "#333";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                                location.reload();
+                            }
+                            else {
+                                let x = document.getElementById("snackbar");
+                                x.innerText = "Something Went Wrong";
+                                // Add the "show" class to DIV
+                                x.style.backgroundColor = "red";
+                                x.style.color = "white";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                            }
+                        })
+                }
+            }
+        }
+
+
+
+
+
+        function showAddAdminForm() {
+            document.getElementById("addAdminForm").style.display = "block";
+        }
+
+        function closeAddAdminForm() {
+            document.getElementById("addAdminForm").style.display = "none";
+        }
+
+
+        function showAddProductForm() {
+            document.getElementById("addProductForm").style.display = "block";
+        }
+
+        function closeAddProductForm() {
+            document.getElementById("addProductForm").style.display = "none";
+        }
+
+
+        function showEditProductForm(id, title, price, stock, description, keyword, category, updatedBy) {
+            const editProductForm = document.getElementById("editProductForm");
+
+            let editFormProductID = document.getElementById("editFormProductID");
+            let editProductTitle = document.getElementById("editProductTitle");
+            let editProductPrice = document.getElementById("editProductPrice");
+            let editProductStock = document.getElementById("editProductStock");
+            let editProductDescription = document.getElementById("editProductDescription");
+            let editProductKeyword = document.getElementById("editProductKeyword");
+            let editProductCategory = document.getElementById("editProductCategory");
+            editFormProductID.value = id;
+            editProductTitle.value = title;
+            editProductPrice.value = price;
+            editProductStock.value = stock;
+            editProductDescription.value = description;
+            editProductKeyword.value = keyword;
+            editProductCategory.value = category;
+
+            editProductForm.style.display = "block";
+        }
+
+        function closeEditProductForm() {
+            document.getElementById("editProductForm").style.display = "none";
+        }
+
+
+        function showEditOrderForm(id, deliveryAddress, postalCode, status) {
+            const editProductForm = document.getElementById("editOrderForm");
+
+            let editFormOrderID = document.getElementById("editFormOrderID");
+            let editOrderDeliveryAddress = document.getElementById("editOrderDeliveryAddress");
+            let editOrderStatus = document.getElementById("editOrderStatus");
+            let editOrderPostalCode = document.getElementById("editOrderPostalCode");
+
+            editFormOrderID.value = id;
+            editOrderDeliveryAddress.value = deliveryAddress;
+            editOrderStatus.value = status;
+            editOrderPostalCode.value = postalCode;
+
+            editProductForm.style.display = "block";
+        }
+
+        function closeEditOrderForm() {
+            document.getElementById("editOrderForm").style.display = "none";
+        }
+
+
+
+
+    </script>
+</body>
+
+
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+</head>
+
+<body>
+    <div class="page-wrapper">
+        {{>header}}
+
+
+        <main class="main" style="margin-top: 140px;">
+
+            {{#if resp.success}}
+            <div class="page-header container">
+                <h1 style="color: black;">Order Details</h1>
+                <br><br><br>
+                <div class="row" style="margin-left: 25px;">
+                    <div class="col" style="color: #777; text-align:start;">Order ID</div>
+                    <div class="col" style="color: #777; text-align:start;">{{resp.order._id}}</div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                </div>
+                <div class="row" style="margin-left: 25px;">
+                    <div class="col" style="color: #777; text-align:start;">Delivery Address</div>
+                    <div class="col" style="color: #777; text-align:start;">{{resp.order.deliveryAddress}}</div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                </div>
+                <div class="row" style="margin-left: 25px;">
+                    <div class="col" style="color: #777; text-align:start;">Postal Code</div>
+                    <div class="col" style="color: #777; text-align:start;">{{resp.order.postalCode}}</div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                </div>
+                <div class="row" style="margin-left: 25px;">
+                    <div class="col" style="color: #777; text-align:start;">Customer Name</div>
+                    <div class="col" style="color: #777; text-align:start;">{{resp.order.userName}}</div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                </div>
+                <div class="row" style="margin-left: 25px;">
+                    <div class="col" style="color: #777; text-align:start;">Customer Email</div>
+                    <div class="col" style="color: #777; text-align:start;">{{resp.order.userEmail}}</div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                </div>
+                <div class="row" style="margin-left: 25px;">
+                    <div class="col" style="color: #777; text-align:start;">Total Price</div>
+                    <div class="col" style="color: #777; text-align:start;">${{resp.order.totalPrice}}</div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                </div>
+                <div class="row" style="margin-left: 25px;">
+                    <div class="col" style="color: #777; text-align:start;">Status</div>
+                    <div class="col" style="color: #777; text-align:start;">{{resp.order.status}}</div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                </div>
+                <div class="row" style="margin-left: 25px;">
+                    <div class="col" style="color: #777; text-align:start;">Ordered Products</div>
+                    <div class="col" style="color: #777; text-align:start;">
+                        {{#each resp.order.orderItems}}
+                        {{this.productName}},
+                        {{/each}}
+                    </div>
+
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                </div>
+                <div class="row" style="margin-left: 25px;">
+                    <div class="col" style="color: #777; text-align:start;">Order Date</div>
+                    <div class="col" style="color: #777; text-align:start;">{{dateFormat resp.order.createdAt "dddd, MMMM Do YYYY, h:mm a"}}</div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                    <div class="col" style="color: #777; text-align:start;"></div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="wishlist-table-container">
+                    <br><br>
+                    <h4 style="color: #777; text-align:center">Ordered Products</h4>
+                    <table class="table table-wishlist mb-0">
+                        <thead>
+                            <tr>
+                                <th class="thumbnail-col"></th>
+                                <th class="product-col">Product</th>
+                                <th class="price-col">Price</th>
+                                <th class="status-col">Quantity</th>
+                                <th class="action-col">Sub Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each resp.order.orderItems}}
+                            <tr class="product-row">
+                                <td>
+                                    <figure class="product-image-container">
+                                        <a href="/showProductDetails{{this._id}}" class="product-image">
+                                            <img src={{this.productImg}} alt="product" width="150px" height="150px">
+                                        </a>
+                                    </figure>
+                                </td>
+                                <td>
+                                    <h4 class="product-title">
+                                        <p href="/showProductDetails{{this._id}}">{{this.productName}}</p>
+                                    </h4>
+                                </td>
+                                <td class="price-box">${{this.productPrice}}</td>
+                                <td class="quantity-box">{{this.quantity}}</td>
+                                <td class="sub-price-box">${{this.price}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div><!-- End .cart-table-container -->
+
+            </div><!-- End .container -->
+            {{else}}
+            <h4 style="text-align: center;">{{resp.message}}</h4>
+            {{/if}}
+        </main><!-- End .main -->
+
+        {{>footer}}
+    </div>
+    <!-- End .page-wrapper -->
+    {{>scripts}}
+</body>
+
+
+</html>

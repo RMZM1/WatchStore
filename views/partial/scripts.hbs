@@ -1,0 +1,198 @@
+{{!-- Go to top BTn --}}
+<a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
+
+<!-- Plugins JS File -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/plugins.min.js"></script>
+<script src="js/nouislider.min.js"></script>
+
+<!-- Main JS File -->
+<script src="js/main.min.js"></script>
+
+<script>
+    function addToCart(productId, userId) {
+        const url = "http://localhost:8080/user/addToCart";
+        if (userId) {
+            let data = {
+                productId,
+                userId
+            };
+            const options = {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+            fetch(url, options).then(response => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        let x = document.getElementById("snackbar");
+                        // Add the "show" class to DIV
+                        x.innerText = "Product Added";
+                        x.style.backgroundColor = "#fff";
+                        x.style.color = "#333";
+                        x.className = "show";
+                        // After 3 seconds, remove the show class from DIV
+                        setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+                    }
+                    else {
+                        let x = document.getElementById("snackbar");
+                        x.innerText = "Something Went Wrong";
+                        // Add the "show" class to DIV
+                        x.style.backgroundColor = "red";
+                        x.style.color = "white";
+                        x.className = "show";
+                        // After 3 seconds, remove the show class from DIV
+                        setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+                    }
+                })
+        }
+        else {
+            let x = document.getElementById("snackbar");
+            x.innerText = "Please login to Add to cart";
+            // Add the "show" class to DIV
+            x.style.backgroundColor = "red";
+            x.style.color = "white";
+            x.className = "show";
+            // After 3 seconds, remove the show class from DIV
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }
+    }
+
+
+    function addToWishlist(productId, userId) {
+        const url = "http://localhost:8080/user/addToWishList";
+        if (userId) {
+            let data = {
+                productId,
+                userId
+            };
+            const options = {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+            fetch(url, options).then(response => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        let x = document.getElementById("snackbar");
+                        // Add the "show" class to DIV
+                        x.innerText = "Product Added";
+                        x.style.backgroundColor = "#fff";
+                        x.style.color = "#333";
+                        x.className = "show";
+                        // After 3 seconds, remove the show class from DIV
+                        setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                    }
+                    else {
+                        let x = document.getElementById("snackbar");
+                        x.innerText = "Something Went Wrong";
+                        // Add the "show" class to DIV
+                        x.style.backgroundColor = "red";
+                        x.style.color = "white";
+                        x.className = "show";
+                        // After 3 seconds, remove the show class from DIV
+                        setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                    }
+                })
+        }
+        else {
+            let x = document.getElementById("snackbar");
+            x.innerText = "Please login to Add to wishlist";
+            // Add the "show" class to DIV
+            x.style.backgroundColor = "red";
+            x.style.color = "white";
+            x.className = "show";
+            // After 3 seconds, remove the show class from DIV
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+        }
+    }
+
+
+    function RemoveFromWishList(productId, userId) {
+        const url = "http://localhost:8080/user/removeFromWishList";
+        if (userId) {
+            let data = {
+                productId,
+                userId
+            };
+            const options = {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+            fetch(url, options).then(response => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        let x = document.getElementById("snackbar");
+                        // Add the "show" class to DIV
+                        x.innerText = "Product Removed";
+                        x.style.backgroundColor = "#fff";
+                        x.style.color = "#333";
+                        x.className = "show";
+                        // After 3 seconds, remove the show class from DIV
+                        setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                        location.reload();
+                    }
+                    else {
+                        let x = document.getElementById("snackbar");
+                        x.innerText = "Something Went Wrong";
+                        // Add the "show" class to DIV
+                        x.style.backgroundColor = "red";
+                        x.style.color = "white";
+                        x.className = "show";
+                        // After 3 seconds, remove the show class from DIV
+                        setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                    }
+                })
+        }
+    }
+
+
+    function RemoveFromCart(productId, userId) {
+        const url = "http://localhost:8080/user/RemoveFromCart";
+        if (userId) {
+            let data = {
+                productId,
+                userId
+            };
+            const options = {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+            fetch(url, options).then(response => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        let x = document.getElementById("snackbar");
+                        // Add the "show" class to DIV
+                        x.innerText = "Product Removed";
+                        x.style.backgroundColor = "#fff";
+                        x.style.color = "#333";
+                        x.className = "show";
+                        // After 3 seconds, remove the show class from DIV
+                        setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                        location.reload();
+                    }
+                    else {
+                        let x = document.getElementById("snackbar");
+                        x.innerText = "Something Went Wrong";
+                        // Add the "show" class to DIV
+                        x.style.backgroundColor = "red";
+                        x.style.color = "white";
+                        x.className = "show";
+                        // After 3 seconds, remove the show class from DIV
+                        setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                    }
+                })
+        }
+    }
+</script>

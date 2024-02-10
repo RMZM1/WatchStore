@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+</head>
+
+<body>
+    <div class="page-wrapper">
+        {{>header}}
+
+        <main class="main">
+            <div class="home-slider-container clearfix">
+                <div class="home-slider slide-animate owl-carousel owl-theme show-nav-hover">
+                    <div class="home-slide home-slide1 d-flex align-items-center banner">
+                        <img class="slide-bg" src="images/new_images/wtpics/slider/slide-1.png" width="1920"
+                            height="804" alt="banner" />
+                        <!-- End .slide-bg -->
+                        <div class="container">
+                            <div class="banner-layer banner-layer-right float-right appear-animate"
+                                data-animation-name="fadeInUpShorter">
+                                <h2>Luxury Watches</h2>
+                                <h3 class="text-uppercase rotated-upto-text mb-0"><small>Up to</small>50% off</h3>
+
+                                <hr class="divider-short-thick">
+
+                                <h5 class="text-uppercase d-inline-block mb-0 ls-n-20">Starting at
+                                    <span>$<em>39</em>99</span>
+                                </h5>
+                                <a href="/shop" class="btn btn-light btn-xl btn-icon-right" role="button">Shop
+                                    Now <i class="fas fa-long-arrow-alt-right"></i></a>
+                            </div>
+                            <!-- End .banner-layer -->
+                        </div>
+                    </div>
+                    <!-- End .home-slide -->
+
+                    <div class="home-slide home-slide2 d-flex align-items-center banner">
+                        <img class="slide-bg" src="images/new_images/wtpics/slider/slide-2.jpg" width="1920"
+                            height="804" alt="banner" />
+                        <!-- End .slide-bg -->
+                        <div class="container">
+                            <div class="banner-layer banner-layer-left float-left appear-animate"
+                                data-animation-name="fadeInUpShorter">
+                                <h2>New Watches</h2>
+                                <h3 class="text-uppercase rotated-upto-text mb-0"><small>Up to</small>20% off</h3>
+
+                                <hr class="divider-short-thick">
+
+                                <h5 class="text-uppercase d-inline-block mb-0 ls-n-20">Starting at
+                                    <span>$<em>19</em>99</span>
+                                </h5>
+                                <a href="/shop" class="btn btn-light btn-xl btn-icon-right" role="button">Shop
+                                    Now <i class="fas fa-long-arrow-alt-right"></i></a>
+                            </div>
+                            <!-- End .banner-layer -->
+                        </div>
+                    </div>
+                    <!-- End .home-slide -->
+                </div>
+                <!-- End .home-slider -->
+            </div>
+            <!-- End .home-slider-container -->
+
+
+            <div class="container mb-5">
+                <div class="info-boxes-container appear-animate" data-animation-name="fadeIn">
+                    <div class="row row-joined">
+                        <div class="info-box info-box-icon-left col-lg-4">
+                            <i class="icon-shipping"></i>
+
+                            <div class="info-box-content">
+                                <h4>FREE SHIPPING &amp; RETURN</h4>
+                                <p>Free shipping on all orders over $299.</p>
+                            </div>
+                            <!-- End .info-box-content -->
+                        </div>
+                        <!-- End .info-box -->
+
+                        <div class="info-box info-box-icon-left col-lg-4">
+                            <i class="icon-money"></i>
+
+                            <div class="info-box-content">
+                                <h4>MONEY BACK GUARANTEE</h4>
+                                <p>100% money back guarantee</p>
+                            </div>
+                            <!-- End .info-box-content -->
+                        </div>
+                        <!-- End .info-box -->
+
+                        <div class="info-box info-box-icon-left col-lg-4">
+                            <i class="icon-support"></i>
+
+                            <div class="info-box-content">
+                                <h4>24/7 SUPPORT</h4>
+                                <p>Support available for any help</p>
+                            </div>
+                            <!-- End .info-box-content -->
+                        </div>
+                        <!-- End .info-box -->
+                    </div>
+                    <!-- End .row -->
+                </div>
+                <!-- End .info-boxes-container -->
+            </div>
+            <!-- End .container -->
+
+            <div class="container mb-4 mb-lg-6">
+                <h2 class="section-title text-center appear-animate" data-animation-name="fadeInUpShorter"
+                    data-animation-delay="200">Featured Products</h2>
+                <p class="section-description text-center appear-animate" data-animation-name="fadeInUpShorter"
+                    data-animation-delay="200">Amazing products added recently in our catalog</p>
+
+                <div class="row product-ajax-grid appear-animate" data-animation-name="fadeInUpShorter"
+                    data-animation-delay="400" id="featuredProductsContainer">
+
+                    {{!-- if success === true --}}
+                    {{#if resp.success }}
+                    {{!-- for each product in resp.response --}}
+                    {{#each resp.products}}
+                    <div class="col-sm-3 col-6">
+                        <div class="product-default inner-quickview inner-icon">
+                            <figure>
+                                <a href="/showProductDetails{{this._id}}">
+                                    <img src={{this.productPic}} alt="product" style="width: auto !important; height: 280px !important;"/>
+                                </a>
+                                <div class="label-group">
+                                    <div class="product-label label-sale">
+                                        {{#if this.salePercent }}
+                                        {{this.salePercent}}%
+                                        {{/if}}
+                                    </div>
+                                </div>
+                                <div class="btn-icon-group">
+                                    <a onclick="addToCart('{{this._id}}', '{{../resp.userId}}')" class="btn-icon btn-add-cart"><i
+                                            class="icon-shopping-cart"></i>
+                                    </a>
+                                </div>
+                            </figure>
+                            <div class="product-details">
+                                <div class="category-wrap">
+                                    <div class="category-list">
+                                        <p class="product-category">{{this.category}}</p>
+                                    </div>
+                                    <a onclick="addToWishlist('{{this._id}}','{{../resp.userId}}')" title="Wishlist" class="btn-icon-wish"><i
+                                            class="icon-heart"></i></a>
+                                </div>
+                                <h3 class="product-title"> <a href="#">{{this.title}}</a> </h3>
+                                <div class="ratings-container">
+                                    <div class="product-ratings">
+                                        {{#if this.ratings}}
+                                        <span class="ratings" style="width:{{this.ratings}}%">
+
+                                        </span>
+                                        {{/if}}
+                                    </div>
+                                    <!-- End .product-ratings -->
+                                </div>
+                                <!-- End .product-container -->
+                                <div class="price-box">
+                                    <span class="old-price">
+                                        {{#if this.oldPrice}}
+                                        ${{this.oldPrice}}
+                                        {{/if}}
+                                    </span>
+                                    <span class="product-price">${{this.price}}</span>
+                                </div>
+                                <!-- End .price-box -->
+                            </div>
+                            <!-- End .product-details -->
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{!-- end of for each --}}
+                    {{else}}
+                    <h4 style="display:block; text-align: center;">Could Not Get any Featured Products At the moment Please Try
+                        again Later</h4>
+                    {{/if}}
+                    {{!-- end of if --}}
+                </div>
+                <!-- End .row -->
+
+                <hr class="mb-4 pb-1">
+
+                <h2 class="section-title text-center appear-animate" data-animation-name="fadeIn"
+                    data-animation-delay="100">Browse Categories</h2>
+                <p class="section-description text-center appear-animate" data-animation-name="fadeIn"
+                    data-animation-delay="100">Amazing categories with only top fashion products</p>
+
+                <div class="owl-carousel owl-theme categories-slider content-center-bottom nav-outer appear-animate"
+                    data-animation-name="fadeIn" data-animation-delay="100" data-owl-options="{
+                    'nav': false,
+                    'resp.resonsive': {
+                        '0': {
+                            'items': 1
+                        },
+                        '480': {
+                            'items': 2
+                        }
+                    }
+                }">
+
+                    <!-- Classic Mens watch Category -->
+                    <div class="product-category">
+                        <a href="/shop.mens.classic">
+                            <figure>
+                                <img src="images/new_images/wtpics/categories/category-1.jpg" width="220" height="220"
+                                    alt="Category" />
+                            </figure>
+                            <div class="category-content">
+                                <h3>Men's Classic</h3>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    <!-- Sports Mens watch Category -->
+                    <div class="product-category">
+                        <a href="/shop.mens.sports">
+                            <figure>
+                                <img src="images/new_images/wtpics/categories/category-2.jpg" width="220" height="220"
+                                    alt="Category" />
+                            </figure>
+                            <div class="category-content">
+                                <h3>Men's Sports</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Womens luxury watch Category -->
+                    <div class="product-category">
+                        <a href="/shop.womens.luxury">
+                            <figure>
+                                <img src="images/new_images/wtpics/categories/category-3.jpg" width="220" height="220"
+                                    alt="Category" />
+                            </figure>
+                            <div class="category-content">
+                                <h3>Girls Luxury</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Womens Fashion watch Category -->
+                    <div class="product-category">
+                        <a href="/shop.womens.fashion">
+                            <figure>
+                                <img src="images/new_images/wtpics/categories/category-4.jpg" width="220" height="220"
+                                    alt="Category" />
+                            </figure>
+                            <div class="category-content">
+                                <h3>Girls Fashion</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Casual Fashion watch Category -->
+                    <div class="product-category">
+                        <a href="/shop.casual">
+                            <figure>
+                                <img src="images/new_images/wtpics/categories/category-5.jpg" width="220" height="220"
+                                    alt="Category" />
+                            </figure>
+                            <div class="category-content">
+                                <h3>Casual</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+                <!-- End .categories-slider -->
+            </div>
+            <!-- End .container -->
+
+            <div class="promo-section mb-5" data-parallax="{'speed': 1.5}"
+                data-image-src="images/new_images/wtpics/banners/category-bg.jpg">
+                <div class="promo-content">
+                    <h2 class="m-b-1 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="200">
+                        New Season Sale</h2>
+                    <h3 class="mb-1 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="400">40%
+                        OFF
+                    </h3>
+                    <hr class="divider-short-thick appear-animate" data-animation-name="fadeInUpShorter"
+                        data-animation-delay="600">
+                    <a href="/shop" class="btn btn-light appear-animate" data-animation-name="fadeInUpShorter"
+                        data-animation-delay="800">Shop Now <i class="fas fa-long-arrow-alt-right ml-2 pl-1"></i></a>
+                </div>
+            </div>
+            <!-- End .promo-section -->
+
+
+
+            <div>
+                <img src="images/new_images/wtpics/banners/companies.jpg" alt="companies" class="center"><br><br>
+            </div>
+
+
+
+        </main>
+        <!-- End .main -->
+        {{>footer}}
+    </div>
+    <!-- End .page-wrapper -->
+    {{>scripts}}
+</body>
+
+
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+</head>
+
+<body>
+    <div class="page-wrapper">
+        {{>header}}
+        <br><br><br><br><br><br><br><br><br>
+        <main class="main">
+            <div class="container">
+                <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+                    <p id="productIDContainer" style="display: none;">{{resp.product._id}}</p>
+                    <p id="userIDContainer" style="display: none;">{{resp.userId}}</p>
+                </nav>
+                {{#if resp.success}}
+                <div class="product-single-container product-single-default">
+
+                    <div class="row">
+                        <div class="col-lg-5 col-md-6 product-single-gallery">
+                            <div class="product-slider-container">
+                                <div
+                                    class="product-single-carousel owl-carousel owl-theme show-nav-hover owl-loaded owl-drag">
+                                    <div class="owl-stage-outer">
+                                        <div class="owl-stage"
+                                            style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1912px;">
+                                            <div class="owl-item active" style="width: 478px;">
+                                                <div class="product-item">
+                                                    <img class="product-single-image" src={{resp.product.productPic}}
+                                                        width="468" height="468" alt="product">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End .product-single-carousel -->
+                            </div>
+                        </div>
+                        <!-- End .product-single-gallery -->
+
+                        <div class="col-lg-7 col-md-6 product-single-details">
+                            <h1 class="product-title">{{resp.product.title}}</h1>
+
+                            <div class="ratings-container">
+                                <div class="product-ratings">
+                                    {{#if resp.product.ratings}}
+                                    <span class="ratings" style="width:{{resp.product.ratings}}%">
+
+                                    </span>
+                                    <!-- End .ratings -->
+                                    {{/if}}
+                                </div>
+                                <!-- End .product-ratings -->
+
+                                <a href="#" class="rating-link">({{resp.product.numOfReviews}} Reviews)</a>
+                            </div>
+                            <!-- End .ratings-container -->
+
+                            <hr class="short-divider">
+
+                            <div class="price-box">
+                                {{#if resp.product.oldPrice}}
+                                <span class="old-price">${{resp.product.oldPrice}}</span>
+                                {{/if}}
+                                <span class="product-price" id="productPrice"> ${{resp.product.price}}</span>
+                            </div>
+                            <!-- End .price-box -->
+
+                            <div class="product-desc">
+                                <p>
+                                    {{resp.product.description}}
+                                </p>
+                            </div>
+                            <!-- End .product-desc -->
+
+                            <ul class="single-info-list">
+                                <li>
+                                    CATEGORY: <strong><a href="#"
+                                            class="product-category">{{resp.product.category}}</a></strong>
+                                </li>
+
+
+                            </ul>
+
+                            <div class="product-filters-container">
+                                <div class="product-single-filter select-custom">
+                                    <label>COLOR:</label>
+                                    <select name="orderby" class="form-control">
+                                        <option value="" selected="selected">CHOOSE AN OPTION
+                                        </option>
+                                        <option value="1">Golden</option>
+                                        <option value="2">Silver</option>
+                                        <option value="3">Black</option>
+
+                                    </select>
+                                </div>
+
+
+
+                                <div class="product-single-filter">
+                                    <label></label>
+                                    <a class="font1 text-uppercase clear-btn" href="#">Clear</a>
+                                </div>
+                                <!---->
+                            </div>
+
+                            <div class="product-action">
+                                <div class="price-box">
+                                    <span class="product-price" id="totalSubPrice">${{resp.product.price}}</span>
+                                </div>
+
+                                <div class="product-single-qty">
+                                    <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                                        <span class="input-group-btn input-group-prepend" id="qtyminusbtn">
+                                            {{!-- <button class="btn btn-outline btn-down-icon bootstrap-touchspin-down"
+                                                type="button">
+                                            </button> --}}
+                                        </span>
+                                        <input class="horizontal-quantity form-control" type="text"
+                                            id="productQuantity">
+                                        <span class="input-group-btn input-group-append" id="qtyplusbtn">
+                                            {{!-- <button class="btn btn-outline btn-up-icon bootstrap-touchspin-up"
+                                                type="button">
+                                            </button> --}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- End .product-single-qty -->
+
+                                <a onclick="addToCart('{{resp.product._id}}', '{{resp.userId}}')"
+                                    class="btn btn-primary text-dark add-cart mr-2 disabled" title="Add to Cart">Add to
+                                    Cart</a>
+
+                                <a href="/cart" class="btn btn-gray view-cart d-none">View cart</a>
+                            </div>
+                            <!-- End .product-action -->
+
+                            <hr class="divider mb-0 mt-0">
+
+                            <div class="product-single-share mb-2 mb-md-1 pb-1">
+                                <label class="sr-only">Share:</label>
+
+                                <div class="social-icons mr-2">
+                                    <a href="#" class="social-icon social-facebook icon-facebook" target="_blank"
+                                        title="Facebook"></a>
+                                    <a href="#" class="social-icon social-twitter icon-twitter" target="_blank"
+                                        title="Twitter"></a>
+                                    <a href="#" class="social-icon social-linkedin fab fa-linkedin-in" target="_blank"
+                                        title="Linkedin"></a>
+                                    <a href="#" class="social-icon social-gplus fab fa-google-plus-g" target="_blank"
+                                        title="Google +"></a>
+                                    <a href="#" class="social-icon social-mail icon-mail-alt" target="_blank"
+                                        title="Mail"></a>
+                                </div>
+                                <!-- End .social-icons -->
+
+                                <a onclick="addToWishlist('{{resp.product._id}}','{{resp.userId}}')"
+                                    class="btn-icon-wish add-wishlist" title="Add to Wishlist"><i
+                                        class="icon-wishlist-2"></i><span>Add to
+                                        Wishlist</span></a>
+                            </div>
+                            <!-- End .product single-share -->
+                        </div>
+                        <!-- End .product-single-details -->
+                    </div>
+                    <!-- End .row -->
+                </div>
+                <!-- End .product-single-container -->
+
+                <div class="product-single-tabs">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="product-tab-desc" data-toggle="tab"
+                                href="#product-desc-content" role="tab" aria-controls="product-desc-content"
+                                aria-selected="true">Description</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" id="product-tab-size" data-toggle="tab" href="#product-size-content"
+                                role="tab" aria-controls="product-size-content" aria-selected="true">Size Guide</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" id="product-tab-reviews" data-toggle="tab"
+                                href="#product-reviews-content" role="tab" aria-controls="product-reviews-content"
+                                aria-selected="false">Reviews ({{resp.product.numOfReviews}})</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="product-desc-content" role="tabpanel"
+                            aria-labelledby="product-tab-desc">
+                            <div class="product-desc-content">
+                                <p>
+                                    {{resp.product.description}}
+                                </p>
+                            </div>
+                            <!-- End .product-desc-content -->
+                        </div>
+                        <!-- End .tab-pane -->
+
+                        <div class="tab-pane fade" id="product-size-content" role="tabpanel"
+                            aria-labelledby="product-tab-size">
+                            <div class="product-size-content">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img src="images/products/single/body-shape.png" alt="body shape" width="217"
+                                            height="398">
+                                    </div>
+                                    <!-- End .col-md-4 -->
+
+                                    <div class="col-md-8">
+                                        <table class="table table-size">
+                                            <thead>
+                                                <tr>
+                                                    <th>SIZE</th>
+                                                    <th>Wrist(mm.)</th>
+                                                    <th>Thickness(mm.)</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>XS</td>
+                                                    <td>34-36</td>
+                                                    <td>27-29</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>S</td>
+                                                    <td>36-38</td>
+                                                    <td>29-31</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>M</td>
+                                                    <td>38-40</td>
+                                                    <td>31-33</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>L</td>
+                                                    <td>40-42</td>
+                                                    <td>33-36</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>XL</td>
+                                                    <td>42-45</td>
+                                                    <td>36-40</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>XXL</td>
+                                                    <td>45-48</td>
+                                                    <td>40-44</td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- End .row -->
+                            </div>
+                            <!-- End .product-size-content -->
+                        </div>
+                        <!-- End .tab-pane -->
+
+
+                        <div class="tab-pane fade" id="product-reviews-content" role="tabpanel"
+                            aria-labelledby="product-tab-reviews">
+                            <div class="product-reviews-content">
+                                <h3 class="reviews-title">{{resp.product.numOfReviews}} Reviews for
+                                    {{resp.product.title}}</h3>
+
+                                <div class="comment-list">
+
+                                    {{#each resp.product.reviews}}
+                                    <div class="comments">
+                                        <figure class="img-thumbnail">
+                                            {{#if this.userProfilePic}}
+                                            <img src={{this.userProfilePic}} alt="author" width="80" height="80">
+                                            {{else}}
+                                            <img src="images/userAccount.png" width="80" height="80" />
+                                            {{/if}}
+                                        </figure>
+
+                                        <div class="comment-block">
+
+                                            <div class="comment-header">
+                                                <div class="comment-arrow"></div>
+                                                <div class="ratings-container float-sm-right">
+                                                    <div class="product-ratings">
+                                                        <span class="ratings" style="width:{{this.rating}}%"></span>
+                                                        <!-- End .ratings -->
+                                                    </div>
+                                                    <!-- End .product-ratings -->
+                                                </div>
+                                                <span class="comment-by">
+                                                    <strong>{{this.userName}}</strong> – {{this.createdAt}}
+                                                </span>
+                                            </div>
+
+                                            <div class="comment-content">
+                                                <p>{{this.comment}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                </div>
+
+                                <div class="divider"></div>
+
+                                <div class="add-product-review">
+                                    <h3 class="review-title">Add a review</h3>
+
+                                    <form class="comment-form m-0" id="productReviewForm">
+                                        <div class="rating-form">
+                                            <label for="rating">Your rating <span class="required">*</span></label>
+                                            <span class="rating-stars">
+                                                <a class="star-1" href="#" onclick="getRating(this)">1</a>
+                                                <a class="star-2" href="#" onclick="getRating(this)">2</a>
+                                                <a class="star-3" href="#" onclick="getRating(this)">3</a>
+                                                <a class="star-4" href="#" onclick="getRating(this)">4</a>
+                                                <a class="star-5" href="#" onclick="getRating(this)">5</a>
+                                            </span>
+
+                                            <select name="rating" id="rating" required="" style="display: none;">
+                                                <option value="">Rate…</option>
+                                                <option value="5">Perfect</option>
+                                                <option value="4">Good</option>
+                                                <option value="3">Average</option>
+                                                <option value="2">Not that bad</option>
+                                                <option value="1">Very poor</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Your review <span class="required">*</span></label>
+                                            <textarea cols="5" rows="6" class="form-control form-control-sm"
+                                                id="reviewComment"></textarea>
+                                        </div>
+                                        <!-- End .form-group -->
+
+
+                                        <input type="submit" class="btn btn-primary" value="Submit"
+                                            id="CreateProductReviewBtn">
+                                    </form>
+                                </div>
+                                <!-- End .add-product-review -->
+                            </div>
+                            <!-- End .product-reviews-content -->
+                        </div>
+                        <!-- End .tab-pane -->
+                    </div>
+                    <!-- End .tab-content -->
+                </div>
+                <!-- End .product-single-tabs -->
+
+
+                {{!-- Related Products --}}
+                <div class="products-section pt-0">
+                    <h2 class="section-title pb-3">Related Products</h2>
+                    <div class="products-slider owl-carousel owl-theme dots-top dots-small owl-loaded owl-drag">
+                        <div class="owl-stage-outer">
+                            <div class="owl-stage"
+                                style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1500px;">
+                                {{#each resp.relatedProducts}}
+                                <div class="owl-item active" style="width: 280px; margin-right: 20px;">
+                                    <div class="product-default inner-quickview inner-icon">
+                                        <figure>
+                                            <a href="/showProductDetails{{this._id}}">
+                                                <img src={{this.productPic}} width="280" height="280" alt="product">
+                                            </a>
+
+                                            <div class="btn-icon-group">
+                                                <a onclick="addToCart('{{this._id}}', '{{../resp.userId}}')"
+                                                    class="btn-icon btn-add-cart product-type-simple"><i
+                                                        class="icon-shopping-cart"></i></a>
+                                            </div>
+
+                                        </figure>
+                                        <div class="product-details">
+                                            <div class="category-wrap">
+                                                <div class="category-list">
+                                                    <p class="product-category">{{this.category}}</p>
+                                                </div>
+                                                <a onclick="addToWishlist('{{this._id}}','{{../resp.userId}}')"
+                                                    title="Wishlist" class="btn-icon-wish"><i
+                                                        class="icon-heart"></i></a>
+                                            </div>
+                                            <h3 class="product-title">
+                                                <p>{{this.title}}</p>
+                                            </h3>
+                                            <div class="ratings-container">
+                                                <div class="product-ratings">
+                                                    <span class="ratings" style="width:{{this.ratings}}%"></span>
+                                                </div>
+                                                <!-- End .product-ratings -->
+                                            </div>
+                                            <!-- End .product-container -->
+                                            <div class="price-box">
+                                                {{#if this.oldPrice}}
+                                                <span class="old-price">${{this.oldPrice}}</span>
+                                                {{/if}}
+                                                <span class="product-price">${{this.price}}</span>
+                                            </div>
+                                            <!-- End .price-box -->
+                                        </div>
+                                        <!-- End .product-details -->
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End .products-slider -->
+                </div>
+                <!-- End Related products-section -->
+                <hr class="mt-0 m-b-5">
+                {{else}}
+                <h4>Could Not Get Product at The Moment Please Try Again Later</h4>
+                {{/if}}
+                <!-- End .row -->
+            </div>
+            <!-- End .container -->
+        </main>
+
+
+        {{>footer}}
+    </div>
+    <!-- End .page-wrapper -->
+    {{>scripts}}
+
+    <script>
+        const productPrice = document.getElementById("productPrice");
+        const totalSubPrice = document.getElementById("totalSubPrice");
+        const productQuantity = document.getElementById("productQuantity");
+        const qtyminusbtn = document.getElementById("qtyminusbtn");
+        const qtyplusbtn = document.getElementById("qtyplusbtn");
+        let priceString = productPrice.innerHTML.toString().trim().substring(1);
+        let priceFloat = parseFloat(priceString);
+
+
+        //On Quantity change multiply price with quantity and show result in totalSubPrice
+        productQuantity.addEventListener('change', () => {
+            let total = priceFloat * productQuantity.value;
+            totalSubPrice.innerHTML = `$${total}`;
+        })
+        qtyminusbtn.addEventListener('click', () => {
+            let total = priceFloat * productQuantity.value;
+            totalSubPrice.innerHTML = `$${total}`;
+        })
+        qtyplusbtn.addEventListener('click', () => {
+            let total = priceFloat * productQuantity.value;
+            totalSubPrice.innerHTML = `$${total}`;
+        })
+
+
+        //get Values from Stars ratings
+        let UserRatings;
+        function getRating(elem) {
+            UserRatings = parseFloat(elem.innerText.toString().trim());
+        }
+        const CreateProductReviewBtn = document.getElementById("CreateProductReviewBtn");
+        CreateProductReviewBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const rating = UserRatings;
+            const comment = document.getElementById("reviewComment").value;
+            const productId = document.getElementById("productIDContainer").innerText.toString().trim();
+            const userId = document.getElementById("userIDContainer").innerText.toString().trim();
+
+
+
+            const url = "http://localhost:8080/product/createProductReview";
+            if (userId) {
+                if (!rating) {
+                    let x = document.getElementById("snackbar");
+                    x.innerText = "Please give Ratings";
+                    // Add the "show" class to DIV
+                    x.style.backgroundColor = "red";
+                    x.style.color = "white";
+                    x.className = "show";
+                    // After 3 seconds, remove the show class from DIV
+                    setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+
+                } else {
+                    let data = {
+                        rating,
+                        comment,
+                        productId,
+                        userId
+                    };
+                    const options = {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    fetch(url, options).then(response => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                let x = document.getElementById("snackbar");
+                                // Add the "show" class to DIV
+                                x.innerText = "Review Recorded";
+                                x.style.backgroundColor = "#fff";
+                                x.style.color = "#333";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                                //location.reload();
+                            }
+                            else {
+                                let x = document.getElementById("snackbar");
+                                x.innerText = data.message;
+                                // Add the "show" class to DIV
+                                x.style.backgroundColor = "red";
+                                x.style.color = "white";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+                            }
+                        })
+                }
+            } else {
+                let x = document.getElementById("snackbar");
+                x.innerText = "Please login to Add a review";
+                // Add the "show" class to DIV
+                x.style.backgroundColor = "red";
+                x.style.color = "white";
+                x.className = "show";
+                // After 3 seconds, remove the show class from DIV
+                setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+            }
+
+        })
+
+
+    </script>
+
+</body>
+
+
+</html>

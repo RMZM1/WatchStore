@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+</head>
+
+<body>
+    <div class="page-wrapper">
+        {{>header}}
+
+
+        <main class="main" style="margin-top: 140px;">
+            <div class="page-header">
+                <div class="container d-flex flex-column align-items-center">
+                    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                        <div class="container">
+                            <p id="UserIDContainer" style="display: none">{{resp.userId}}</p>
+                        </div>
+                    </nav>
+
+                    <h1 style="color: black;">Cart</h1>
+                </div>
+            </div>
+            <div class="container">
+                <div class="cart-title">
+                    <h2 class="p-2" style="text-align: center;">My Cart on Watch Store</h2>
+                </div>
+                {{#if resp.success}}
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="cart-table-container">
+
+                            <table class="table table-cart">
+                                <thead>
+                                    <tr>
+                                        <th class="thumbnail-col"></th>
+                                        <th class="product-col">Product</th>
+                                        <th class="price-col">Price</th>
+                                        <th class="qty-col">Quantity</th>
+                                        <th class="text-right">Subtotal</th>
+                                        <th class="text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each resp.products}}
+                                    <tr class="product-row">
+                                        <td>
+                                            <figure class="product-image-container">
+                                                <a href="/showProductDetails{{this._id}}" class="product-image">
+                                                    <img src={{this.productPic}} alt="product" width="80" height="80"
+                                                        class="ProductImageContainer">
+                                                </a>
+                                                <p class="ProductIDContainer" style="display: none">{{this._id}}</p>
+                                            </figure>
+                                        </td>
+                                        <td class="product-col">
+                                            <h5 class="product-title">
+                                                <p href="/showProductDetails{{this._id}}" class="ProductNameContainer">
+                                                    {{this.title}}</p>
+                                            </h5>
+                                        </td>
+                                        <td class="price-box ProductPriceContainer">
+                                            ${{this.price}}
+                                        </td>
+                                        <td>
+                                            <div class="product-single-qty">
+                                                <input class="horizontal-quantity form-control ProductQuantityContainer"
+                                                    onchange="changeSubTotal(this)" type="text">
+                                            </div><!-- End .product-single-qty -->
+                                        </td>
+                                        <td class="text-right price-box subtotal-price">
+                                            ${{this.price}}</td>
+                                        <td class="text-right"><button
+                                                onclick="RemoveFromCart('{{this._id}}','{{../resp.userId}}')"
+                                                class="button-33" role="button">
+                                                Remove
+                                            </button></td>
+
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div><!-- End .cart-table-container -->
+                    </div><!-- End .col-lg-8 -->
+                    <div class="col-lg-4">
+                        <div class="cart-summary">
+                            <p style="font-weight: bolder; font-size:18px; text-align:center">Cash on Delivery</p>
+                            <table class="table table-totals">
+                                <tbody>
+                                    <tr>
+                                        <td>Subtotal</td>
+                                        <td id="SubTotal"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivery Charges</td>
+                                        <td id="DeliveryChargesContainer">$10</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td id="Total"></td>
+                                    </tr>
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <td>Delivery Address<span style="color: red;">*</span></td>
+                                        <td><textarea class="form-cotrol" rows="5" id="deliveryAddress"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Postal Code<span style="color: red;">*</span></td>
+                                        <td><input type="text" class="form-cotrol" id="postalCode" /></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <div class="checkout-methods">
+                                <button class="btn btn-block btn-dark" id="PlaceOrderBtn">Place Order
+                                    <i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        </div><!-- End .cart-summary -->
+                    </div><!-- End .col-lg-4 -->
+                </div><!-- End .row -->
+                {{else}}
+                <h4 style="text-align: center;">{{resp.message}}</h4>
+                {{/if}}
+            </div><!-- End .container -->
+
+            <div class="mb-6"></div><!-- margin -->
+        </main><!-- End .main -->
+
+        {{>footer}}
+    </div>
+    <!-- End .page-wrapper -->
+    {{>scripts}}
+
+    <script>
+        window.onload = showTotals;
+        let DeliveryCharges = 0;
+        const DeliveryChargesContainer = document.getElementById("DeliveryChargesContainer");
+
+
+        function changeSubTotal(elem) {
+            let Quantity = elem.value;
+            let priceElem = elem.parentElement.parentElement.parentElement.previousElementSibling;
+            let subTotalElem = elem.parentElement.parentElement.parentElement.nextElementSibling;
+            let price = parseFloat(priceElem.innerHTML.toString().trim().substring(1));
+            let subTotal = price * Quantity;
+            subTotalElem.innerHTML = `$${subTotal}`;
+            showTotals();
+        }
+
+
+        function showTotals() {
+            let SubTotal = 0;
+            let subtotals = document.getElementsByClassName("subtotal-price");
+            for (let i = 0; i < subtotals.length; i++) {
+                let price = parseFloat(subtotals[i].innerHTML.toString().trim().substring(1));
+                SubTotal = SubTotal + price;
+            }
+            if (SubTotal >= 300) {
+                DeliveryCharges = 0;
+            }
+            else {
+                DeliveryCharges = 10
+            }
+            let Total = SubTotal + DeliveryCharges;
+            let subTotalContainer = document.getElementById("SubTotal");
+            let totalContainer = document.getElementById("Total");
+            subTotalContainer.innerHTML = `$${SubTotal}`;
+            totalContainer.innerHTML = `$${Total}`;
+            DeliveryChargesContainer.innerHTML = `$${DeliveryCharges}`;
+
+        }
+
+
+        const PlaceOrderBtn = document.getElementById("PlaceOrderBtn");
+        PlaceOrderBtn.addEventListener('click', () => {
+            //Get Data 
+            const UserID = document.getElementById("UserIDContainer").innerHTML.toString().trim();
+            const deliveryAddress = document.getElementById("deliveryAddress").value;
+            const postalCode = document.getElementById("postalCode").value;
+            //get products
+            let ProductImageContainer = document.getElementsByClassName("ProductImageContainer");
+            let ProductIDContainer = document.getElementsByClassName("ProductIDContainer");
+            let ProductNameContainer = document.getElementsByClassName("ProductNameContainer");
+            let ProductPriceContainer = document.getElementsByClassName("ProductPriceContainer");
+            let ProductQuantityContainer = document.getElementsByClassName("ProductQuantityContainer");
+            let ProductIds = [];
+            let ProductImgs = [];
+            let ProductNames = [];
+            let ProductPrices = [];
+            let ProductQuantities = [];
+
+            for (let i = 0; i < ProductIDContainer.length; i++) {
+                ProductIds.push(ProductIDContainer[i].innerHTML.toString().trim());
+                ProductImgs.push(ProductImageContainer[i].src);
+                ProductNames.push(ProductNameContainer[i].innerHTML.toString().trim());
+                ProductPrices.push(parseFloat(ProductPriceContainer[i].innerHTML.toString().trim().substring(1)));
+                ProductQuantities.push(ProductQuantityContainer[i].value);
+            }
+            //Send Data to api when placing order
+            const url = "http://localhost:8080/order/newOrder";
+            if (UserID) {
+                if (deliveryAddress && postalCode) {
+                    const data = {
+                        productId: ProductIds,
+                        productImg: ProductImgs,
+                        productPrice: ProductPrices,
+                        productName: ProductNames,
+                        quantity: ProductQuantities,
+                        userId: UserID,
+                        deliveryAddress: deliveryAddress,
+                        postalCode: postalCode,
+                        DeliveryCharges: DeliveryCharges,
+                    }
+                    const options = {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    fetch(url, options).then(response => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                let x = document.getElementById("snackbar");
+                                // Add the "show" class to DIV
+                                x.innerText = "Order Has Been Placed";
+                                x.style.backgroundColor = "#fff";
+                                x.style.color = "#333";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+                            }
+                            else {
+                                let x = document.getElementById("snackbar");
+                                x.innerText = "Something Went Wrong";
+                                // Add the "show" class to DIV
+                                x.style.backgroundColor = "red";
+                                x.style.color = "white";
+                                x.className = "show";
+                                // After 3 seconds, remove the show class from DIV
+                                setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+                            }
+                        })
+                }
+                else {
+                    let x = document.getElementById("snackbar");
+                    x.innerText = "Please Include All Mandatory Fields";
+                    // Add the "show" class to DIV
+                    x.style.backgroundColor = "red";
+                    x.style.color = "white";
+                    x.className = "show";
+                    // After 3 seconds, remove the show class from DIV
+                    setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+
+                }
+            }
+
+            else {
+                let x = document.getElementById("snackbar");
+                x.innerText = "Something Went Wrong";
+                x.style.backgroundColor = "red";
+                x.style.color = "white";
+                x.className = "show";
+                setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+            }
+
+
+
+        })
+
+    </script>
+
+</body>
+
+
+</html>

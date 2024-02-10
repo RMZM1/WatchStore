@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+</head>
+
+<body>
+    <div class="page-wrapper">
+        {{>header}}
+        <main class="main" style="margin-top: 140px;">
+            <div class="page-header">
+                <div class="container d-flex flex-column align-items-center">
+                    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                    </nav>
+                    <h1 style="color: black;">Admin Login</h1>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <form action="/admin" method="post">
+                        <div>
+                            <label for="email">
+                                Email address
+                                <span class="required">*</span>
+                            </label>
+                            <input type="email" class="form-input form-wide" name="email" required />
+                        </div>
+                        <div>
+                            <label for="password">
+                                Password
+                                <span class="required">*</span>
+                            </label>
+                            <input type="password" class="form-input form-wide" name="password" minlength="8"
+                                required />
+                        </div>
+                        <div class="form-footer">
+                            <a href="/adminForgotPassword" class="forget-password text-dark form-footer-left">Forgot
+                                Password?</a>
+                            <a href="/adminVerifyEmail" class="forget-password text-dark form-footer-right">Verify Email?</a>
+                        </div>
+                        <button type="submit" class="btn btn-dark btn-md w-100">
+                            Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main><!-- End .main -->
+
+
+        {{>footer}}
+    </div>
+    <!-- End .page-wrapper -->
+    {{>scripts}}
+</body>
+
+
+</html>

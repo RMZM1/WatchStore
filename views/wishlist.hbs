@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+</head>
+
+<body>
+    <div class="page-wrapper">
+        {{>header}}
+        <main class="main" style="margin-top: 140px;">
+            <div class="page-header">
+                <div class="container d-flex flex-column align-items-center">
+                    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                        <div class="container">
+
+                        </div>
+                    </nav>
+
+                    <h1 style="color: black;">Wishlist</h1>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="wishlist-title">
+                    <h2 class="p-2" style="text-align: center;">My wishlist on Watch Store</h2>
+                </div>
+
+                {{#if resp.success}}
+                <div class="wishlist-table-container">
+                    <table class="table table-wishlist mb-0">
+                        <thead>
+                            <tr>
+                                <th class="thumbnail-col"></th>
+                                <th class="product-col">Product</th>
+                                <th class="price-col">Price</th>
+                                <th class="status-col">Stock Status</th>
+                                <th class="action-col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each resp.products}}
+                            <tr class="product-row">
+                                <td>
+                                    <figure class="product-image-container">
+                                        <a href="/showProductDetails{{this._id}}" class="product-image">
+                                            <img src={{this.productPic}} alt="product" width="150px" height="150px">
+                                        </a>
+                                    </figure>
+                                </td>
+                                <td>
+                                    <h4 class="product-title">
+                                        <p href="/showProductDetails{{this._id}}">{{this.title}}</p>
+                                    </h4>
+                                </td>
+                                <td class="price-box">${{this.price}}</td>
+                                <td>
+                                    {{#if this.stock}}
+                                    <span class="stock-status">In stock</span>
+                                    {{else}}
+                                    <span class="stock-status">Currently not available</span>
+                                    {{/if}}
+                                </td>
+                                <td class="action">
+                                    <button onclick="addToCart('{{this._id}}', '{{../resp.userId}}')" class="button-34" role="button">
+                                        ADD TO CART
+                                    </button>
+                                    <button onclick="RemoveFromWishList('{{this._id}}', '{{../resp.userId}}')" class="button-33" role="button">
+                                        Remove
+                                    </button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div><!-- End .cart-table-container -->
+                {{else}}
+                <h4 style="text-align: center;">{{resp.message}}</h4>
+                {{/if}}
+            </div><!-- End .container -->
+        </main><!-- End .main -->
+
+        {{>footer}}
+    </div>
+    <!-- End .page-wrapper -->
+    {{>scripts}}
+</body>
+
+
+</html>

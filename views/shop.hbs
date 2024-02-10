@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+</head>
+
+<body>
+    <div class="page-wrapper">
+        {{>header}}
+        <br><br><br><br><br><br><br>
+
+
+        <main class="main">
+            <div class="container">
+                <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#"></a></li>
+                    </ol>
+                </nav>
+
+                <div class="products_row">
+                    <div class="col-lg-9 main-content">
+
+                        <div class="row product-ajax-grid appear-animate" data-animation-name="fadeInUpShorter"
+                            data-animation-delay="400" id="ProductsContainer">
+
+                            {{!-- if success === true --}}
+                            {{#if resp.success }}
+                            {{!-- for each product in response --}}
+                            {{#each resp.products}}
+                            <div class="col-6 col-sm-3">
+                                <div class="product-default inner-quickview inner-icon">
+                                    <figure>
+                                        <a href="/showProductDetails{{this._id}}">
+                                            <img src={{this.productPic}} alt="product" style="width: auto !important; height: 280px !important;" />
+                                        </a>
+                                        <div class="label-group">
+                                            <div class="product-label label-sale">
+                                                {{#if this.salePercent }}
+                                                {{this.salePercent}}%
+                                                {{/if}}
+                                            </div>
+                                        </div>
+                                        <div class="btn-icon-group">
+                                            <a onclick="addToCart('{{this._id}}', '{{../resp.userId}}')"
+                                                class="btn-icon btn-add-cart"><i class="icon-shopping-cart"></i>
+                                            </a>
+                                        </div>
+                                    </figure>
+                                    <div class="product-details">
+                                        <div class="category-wrap">
+                                            <div class="category-list">
+                                                <p class="product-category">{{this.category}}</p>
+                                            </div>
+                                            <a onclick="addToWishlist('{{this._id}}','{{../resp.userId}}')"
+                                                title="Wishlist" class="btn-icon-wish"><i class="icon-heart"></i></a>
+                                        </div>
+                                        <h3 class="product-title"> <a href="#">{{this.title}}</a> </h3>
+                                        <div class="ratings-container">
+                                            <div class="product-ratings">
+                                                {{#if this.ratings}}
+                                                <span class="ratings" style="width:{{this.ratings}}%">
+
+                                                </span>
+                                                <!-- End .ratings -->
+                                                {{/if}}
+                                            </div>
+                                            <!-- End .product-ratings -->
+                                        </div>
+                                        <!-- End .product-container -->
+                                        <div class="price-box">
+                                            <span class="old-price">
+                                                {{#if this.oldPrice}}
+                                                ${{this.oldPrice}}
+                                                {{/if}}
+                                            </span>
+                                            <span class="product-price">${{this.price}}</span>
+                                        </div>
+                                        <!-- End .price-box -->
+                                    </div>
+                                    <!-- End .product-details -->
+                                </div>
+                            </div>
+                            {{/each}}
+                            {{!-- end of for each --}}
+                            {{else}}
+                            <h4 style="display:block; text-align: center;">Could Not Get Products At the moment
+                                Please Try
+                                again Later</h4>
+                            {{/if}}
+                            {{!-- end of if --}}
+
+                        </div>
+                        <!-- End .row -->
+
+                        {{!-- <nav class="toolbox toolbox-pagination">
+                            <ul class="pagination toolbox-item">
+                                <li class="page-item disabled">
+                                    <a class="page-link page-link-btn" href="#"><i class="icon-angle-left"></i></a>
+                                </li>
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item"><span class="page-link">...</span></li>
+                                <li class="page-item">
+                                    <a class="page-link page-link-btn" href="#"><i class="icon-angle-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav> --}}
+                    </div>
+                    <!-- End .col-lg-9 -->
+
+
+                </div>
+                <!-- End .row -->
+            </div>
+            <!-- End .container -->
+
+            <div class="mb-3"></div>
+            <!-- margin -->
+        </main>
+        <!-- End .main -->
+
+
+        {{>footer}}
+    </div>
+    <!-- End .page-wrapper -->
+    {{>scripts}}
+</body>
+
+
+</html>
